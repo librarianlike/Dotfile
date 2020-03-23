@@ -1,29 +1,3 @@
-if &compatible
-  set nocompatible
-endif
-" Add the dein installation directory into runtimepath
-set runtimepath+=~/.cache/dein/repos/github.com/Shougo/dein.vim
-
-if dein#load_state('~/.cache/dein')
-  call dein#begin('~/.cache/dein')
-
-  " プラグインリストを収めた TOML ファイル
-  " 予め TOML ファイル（後述）を用意しておく
-  let s:toml_dir  = '~/.config/nvim'
-  let s:toml      = s:toml_dir . '/dein.toml'
-  let s:lazy_toml = s:toml_dir . '/dein_lazy.toml'
-
-  " TOML を読み込み、キャッシュしておく
-  call dein#load_toml(s:toml,      {'lazy': 0})
-  call dein#load_toml(s:lazy_toml, {'lazy': 1})
-
-  call dein#end()
-  call dein#save_state()
-endif
-
-filetype plugin indent on
-syntax enable
-
 " 文字コード関連
 scriptencoding utf-8
 set encoding=utf-8
@@ -31,6 +5,15 @@ set termencoding=utf-8
 set fileencodings=utf-8,ciso-2022-jp,p932,euc-jp,default,latin
 set fileformat=unix
 set fileformats=unix,dos,mac
+
+" タブ幅の設定
+set expandtab
+set tabstop=4
+set shiftwidth=4
+set softtabstop=0
+
+" 改行時のコメントアウトを無効
+set formatoptions-=ro
 
 " 履歴
 set history=1000
@@ -62,11 +45,56 @@ set incsearch
 " 括弧入力時に対応する括弧を表示
 set showmatch
 
-" タブ幅の設定
-set expandtab
-set tabstop=4
-set shiftwidth=4
-set softtabstop=0
+" dein用設定
+if $compatible
+ set nocompatible
+endif
 
-" 改行時のコメントアウトを無効
-set formatoptions-=ro
+" reset augroup
+augroup MyAutoCmd
+  autocmd!
+augroup END
+
+au FileType * setlocal formatoptions-=ro
+
+" ESCでIMEを確実にOFF
+inoremap <ESC> <ESC>:set iminsert=0<CR>
+
+" 色設定
+set termguicolors
+
+" dein settings {{{
+" dein自体の自動インストール
+if has('unix')
+	let s:cache_home = empty($XDG_CACHE_HOME) ? expand('~/.cache') : $XDG_CACHE_HOME
+	let s:dein_dir = s:cache_home . '/dein'
+	let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
+	if !isdirectory(s:dein_repo_dir)
+	  call system('git clone https://github.com/Shougo/dein.vim ' . shellescape(s:dein_repo_dir))
+	endif
+	let &runtimepath = s:dein_repo_dir .",". &runtimepath
+	" " プラグイン読み込み＆キャッシュ作成
+	let s:toml_file = fnamemodify(expand('<sfile>'), ':h').'/dein.toml'
+	let s:toml_lazy_file = fnamemodify(expand('<sfile>'), ':h').'/dein_lazy.toml'
+	if dein#load_state(s:dein_dir)
+	  call dein#begin(s:dein_dir)
+	  call dein#load_toml(s:toml_file, {'lazy':0})
+	  call dein#load_toml(s:toml_lazy_file, {'lazy':1})
+	  call dein#end()
+	  call dein#save_state()
+	endif
+	" " 不足プラグインの自動インストール
+	if has('vim_starting') && dein#check_install()
+	  call dein#install()
+	endif
+	
+	" }}}
+	
+	" プラグイン設定読み込み
+	runtime! userautoload/*.vim
+	
+endif
+
+filetype plugin indent on
+
+

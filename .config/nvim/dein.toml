@@ -1,90 +1,174 @@
-[[plugins]]
+﻿[[plugins]]
 repo = 'itchyny/lightline.vim'
-hook_add = '''
-" Lightline設定
-set laststatus=2
-let g:lightline = {
-      \ 'colorscheme': 'codedark',
-      \ 'mode_map': { 'c': 'NORMAL' },
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ], ['fugitive'],
-      \             [ 'cocstatus', 'readonly', 'filename' ] ]
-      \ },
-      \ 'component_function': {
-      \   'modified': 'LightlineModified',
-      \   'readonly': 'LightlineReadonly',
-      \   'fugitive': 'MyFugitive',
-      \   'filename': 'LightlineFilename',
-      \   'fileformat': 'LightlineFileformat',
-      \   'filetype': 'LightlineFiletype',
-      \   'fileencoding': 'LightlineFileencoding',
-      \   'mode': 'LightlineMode',
-      \   'cocstatus': 'coc#status'
-      \ },
-      \ 'separator': { 'left': "\ue0b0", 'right': "\ue0b2 " },
-      \ 'subseparator': { 'left': "\ue0b1", 'right': "\ue0b3 " }
-      \ }
+hook_add='''
+	" Lightline設定
+	set laststatus=2
+	let g:lightline = {
+	      \ 'colorscheme': 'codedark',
+	      \ 'mode_map': { 'c': 'NORMAL' },
+	      \ 'active': {
+	      \   'left': [ [ 'mode', 'paste' ], ['fugitive'],
+	      \             [ 'cocstatus', 'readonly', 'filename' ] ]
+	      \ },
+	      \ 'component_function': {
+	      \   'modified': 'LightlineModified',
+	      \   'readonly': 'LightlineReadonly',
+	      \   'fugitive': 'MyFugitive',
+	      \   'filename': 'LightlineFilename',
+	      \   'fileformat': 'LightlineFileformat',
+	      \   'filetype': 'LightlineFiletype',
+	      \   'fileencoding': 'LightlineFileencoding',
+	      \   'mode': 'LightlineMode',
+	      \   'cocstatus': 'coc#status'
+	      \ },
+	      \ 'separator': { 'left': "\ue0b0", 'right': "\ue0b2 " },
+	      \ 'subseparator': { 'left': "\ue0b1", 'right': "\ue0b3 " }
+	      \ }
+	
+	function! LightlineModified()
+	  return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+	endfunction
+	
+	function! LightlineReadonly()
+	  return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? "\u2b64" : ''
+	endfunction
+	
+	function! LightlineFilename()
+	  return ('' != LightlineReadonly() ? LightlineReadonly() . '' : '') .
+	        \ (&ft == 'vimfiler' ? vimfiler#get_status_string() :
+	        \  &ft == 'unite' ? unite#get_status_string() :
+	        \  &ft == 'vimshell' ? vimshell#get_status_string() :
+	        \ '' != expand('%:t') ? expand('%:t') : '[No Name]') .
+	        \ ('' != LightlineModified() ? '' . LightlineModified() : '')
+	endfunction
+	
+	function! LightlineFugitive()
+	  if &ft !~? 'vimfiler\|gundo' && exists("*fugitive#head")
+	    let branch = fugitive#head()
+	    return branch !=# '' ? "\u2b60 ".branch : ''
+	  endif
+	  return ''
+	endfunction
+	
+	function! LightlineFileformat()
+	  return winwidth(0) > 70 ? &fileformat : ''
+	endfunction
+	
+	function! LightlineFiletype()
+	  return winwidth(0) > 70 ? (&filetype !=# '' ? &filetype : 'no ft') : ''
+	endfunction
+	
+	function! LightlineFileencoding()
+	  return winwidth(0) > 70 ? (&fenc !=# '' ? &fenc : &enc) : ''
+	endfunction
+	
+	function! LightlineMode()
+	  return winwidth(0) > 60 ? lightline#mode() : ''
+	endfunction
+	
+	function! MyFugitive()
+	  try
+	    if &ft !~? 'vimfiler\|gundo' && exists('*fugitive#head') && strlen(fugitive#head())
+	      return ' ' . fugitive#head()
+	    endif
+	  catch
+	  endtry
+	  return ''
+	endfunction
+'''
 
-function! LightlineModified()
-  return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
-endfunction
+[[plugins]]
+repo = 'terryma/vim-multiple-cursors'
 
-function! LightlineReadonly()
-  return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? "\u2b64" : ''
-endfunction
+[[plugins]]
+repo = 'tpope/vim-surround'
 
-function! LightlineFilename()
-  return ('' != LightlineReadonly() ? LightlineReadonly() . '' : '') .
-        \ (&ft == 'vimfiler' ? vimfiler#get_status_string() :
-        \  &ft == 'unite' ? unite#get_status_string() :
-        \  &ft == 'vimshell' ? vimshell#get_status_string() :
-        \ '' != expand('%:t') ? expand('%:t') : '[No Name]') .
-        \ ('' != LightlineModified() ? '' . LightlineModified() : '')
-endfunction
+[[plugins]]
+repo = 'modsound/gips-vim'
 
-function! LightlineFugitive()
-  if &ft !~? 'vimfiler\|gundo' && exists("*fugitive#head")
-    let branch = fugitive#head()
-    return branch !=# '' ? "\u2b60 ".branch : ''
-  endif
-  return ''
-endfunction
-
-function! LightlineFileformat()
-  return winwidth(0) > 70 ? &fileformat : ''
-endfunction
-
-function! LightlineFiletype()
-  return winwidth(0) > 70 ? (&filetype !=# '' ? &filetype : 'no ft') : ''
-endfunction
-
-function! LightlineFileencoding()
-  return winwidth(0) > 70 ? (&fenc !=# '' ? &fenc : &enc) : ''
-endfunction
-
-function! LightlineMode()
-  return winwidth(0) > 60 ? lightline#mode() : ''
-endfunction
-
-function! MyFugitive()
-  try
-    if &ft !~? 'vimfiler\|gundo' && exists('*fugitive#head') && strlen(fugitive#head())
-      return ' ' . fugitive#head()
-    endif
-  catch
-  endtry
-  return ''
-endfunction
+[[plugins]]
+repo = 'easymotion/vim-easymotion'
+hook_add='''
+	" easymotion
+	map  <Leader>f <Plug>(easymotion-bd-f)
+	nmap <Leader>f <Plug>(easymotion-overwin-f)
+	
+	" s{char}{char} to move to {char}{char}
+	nmap s <Plug>(easymotion-overwin-f2)
+	vmap s <Plug>(easymotion-bd-f2)
+	
+	" Move to word
+	map  <Leader>w <Plug>(easymotion-bd-w)
+	nmap <Leader>w <Plug>(easymotion-overwin-w)
 '''
 
 [[plugins]]
 repo = 'jeffkreeftmeijer/vim-numbertoggle'
 
 [[plugins]]
+repo = 'kana/vim-operator-user'
+
+[[plugins]]
+repo = 'osyo-manga/vim-operator-search'
+
+[[plugins]]
+repo = 'kana/vim-operator-replace'
+hook_add='''
+	map R  <Plug>(operator-replace)
+'''
+
+[[plugins]]
+repo = 'kana/vim-textobj-function'
+
+[[plugins]]
+repo = 'kana/vim-textobj-user'
+
+[[plugins]]
+repo = 'scrooloose/nerdtree'
+
+[[plugins]]
+repo = 'mhinz/vim-startify'
+
+# Gitの編集履歴
+# [[plugins]]
+# repo = 'mhinz/vim-signify'
+
+[[plugins]]
+repo = 'kana/vim-submode'
+hook_add='''
+	" 分割ページの調整
+	call submode#enter_with('bufmove', 'n', '', 's>', '<C-w>>')
+	call submode#enter_with('bufmove', 'n', '', 's<', '<C-w><')
+	call submode#enter_with('bufmove', 'n', '', 's+', '<C-w>+')
+	call submode#enter_with('bufmove', 'n', '', 's-', '<C-w>-')
+	call submode#map('bufmove', 'n', '', '>', '<C-w>>')
+	call submode#map('bufmove', 'n', '', '<', '<C-w><')
+	call submode#map('bufmove', 'n', '', '+', '<C-w>+')
+	call submode#map('bufmove', 'n', '', '-', '<C-w>-')
+'''
+
+[[plugins]]
+repo = 'ryanoasis/vim-devicons'
+
+[[plugins]]
+repo = 'neoclide/coc.nvim'
+merge = '0'
+rev = 'release'
+build = 'coc#util#install()'
+
+[[plugins]]
 repo = 'tomasiser/vim-code-dark'
 hook_add = '''
-colorscheme codedark
+	colorscheme codedark
 '''
 
 [[plugins]]
 repo = 'tpope/vim-fugitive'
+
+[[plugins]]
+repo = 'junegunn/fzf.vim'
+build = 'fzf#install()'
+
+# 言語シンタックス系、バグ多し
+# [[plugins]]
+# repo = 'sheerun/vim-polyglot'
