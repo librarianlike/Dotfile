@@ -1,7 +1,7 @@
 ﻿[[plugins]]
 repo = 'itchyny/lightline.vim'
 hook_add='''
-	" Lightline設定
+    " Lightline設定
 	set laststatus=2
 	let g:lightline = {
 	      \ 'colorscheme': 'codedark',
@@ -21,7 +21,7 @@ hook_add='''
 	      \   'mode': 'LightlineMode',
 	      \   'cocstatus': 'coc#status'
 	      \ },
-	      \ 'separator': { 'left': "\ue0b0", 'right': "\ue0b2 " },
+	      \ 'separator': { 'left': "\ue0b0", 'right': "\ue0b2" },
 	      \ 'subseparator': { 'left': "\ue0b1", 'right': "\ue0b3 " }
 	      \ }
 	
@@ -45,7 +45,7 @@ hook_add='''
 	function! LightlineFugitive()
 	  if &ft !~? 'vimfiler\|gundo' && exists("*fugitive#head")
 	    let branch = fugitive#head()
-	    return branch !=# '' ? "\u2b60 ".branch : ''
+	    return branch !=# '' ? "\u2b60".branch : ''
 	  endif
 	  return ''
 	endfunction
@@ -89,17 +89,20 @@ repo = 'modsound/gips-vim'
 [[plugins]]
 repo = 'easymotion/vim-easymotion'
 hook_add='''
-	" easymotion
-	map  <Leader>f <Plug>(easymotion-bd-f)
-	nmap <Leader>f <Plug>(easymotion-overwin-f)
-	
-	" s{char}{char} to move to {char}{char}
-	nmap s <Plug>(easymotion-overwin-f2)
-	vmap s <Plug>(easymotion-bd-f2)
-	
-	" Move to word
-	map  <Leader>w <Plug>(easymotion-bd-w)
-	nmap <Leader>w <Plug>(easymotion-overwin-w)
+" <Leader>f{char} to move to {char}
+map  <Leader>g <Plug>(easymotion-bd-f)
+nmap <Leader>g <Plug>(easymotion-overwin-f)
+
+" s{char}{char} to move to {char}{char}
+nmap s <Plug>(easymotion-overwin-f2)
+
+" Move to line
+map <Leader>L <Plug>(easymotion-bd-jk)
+nmap <Leader>L <Plug>(easymotion-overwin-line)
+
+" Move to word
+map  <Leader>w <Plug>(easymotion-bd-w)
+nmap <Leader>w <Plug>(easymotion-overwin-w)
 '''
 
 [[plugins]]
@@ -155,6 +158,9 @@ repo = 'neoclide/coc.nvim'
 merge = '0'
 rev = 'release'
 build = 'coc#util#install()'
+hook_add = '''
+    inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+'''
 
 [[plugins]]
 repo = 'tomasiser/vim-code-dark'

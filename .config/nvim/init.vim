@@ -90,11 +90,11 @@ if has('unix')
 	
 	" }}}
 	
-	" プラグイン設定読み込み
-	runtime! userautoload/*.vim
-	
 endif
 
 filetype plugin indent on
 
+" Python3 provider
+let g:python3_host_prog = '/usr/bin/python3'
+let g:loaded_python_provider = 0
 
