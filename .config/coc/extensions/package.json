@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "coc-angular": ">=0.900.18",
+    "coc-css": ">=1.2.2",
+    "coc-eslint": ">=1.2.6",
+    "coc-highlight": ">=1.2.5",
+    "coc-json": ">=1.2.5",
+    "coc-lit-html": ">=0.2.0",
+    "coc-marketplace": ">=1.7.0",
+    "coc-pairs": ">=1.2.21",
+    "coc-solargraph": ">=1.1.6",
+    "coc-tslint-plugin": ">=1.1.1",
+    "coc-tsserver": ">=1.4.12",
+    "coc-yank": ">=1.1.4"
+  }
+}
