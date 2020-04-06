@@ -12,9 +12,6 @@ set tabstop=4
 set shiftwidth=4
 set softtabstop=0
 
-" 改行時のコメントアウトを無効
-set formatoptions-=ro
-
 " 履歴
 set history=1000
 
@@ -44,6 +41,11 @@ set incsearch
 
 " 括弧入力時に対応する括弧を表示
 set showmatch
+
+" guicolor
+set termguicolors
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 
 " dein用設定
 if $compatible
@@ -98,3 +100,8 @@ filetype plugin indent on
 let g:python3_host_prog = '/usr/bin/python3'
 let g:loaded_python_provider = 0
 
+" 改行時のコメントアウトを無効
+set formatoptions-=r
+set formatoptions-=o
+" コメント改行時に自動でコメントヘッダを挿入しない（ファイルタイプ：全て）
+autocmd FileType * set formatoptions-=ro
