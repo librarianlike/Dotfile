@@ -7,10 +7,17 @@ set fileformat=unix
 set fileformats=unix,dos,mac
 
 " タブ幅の設定
-set expandtab
-set tabstop=4
-set shiftwidth=4
-set softtabstop=0
+set expandtab   " タブ入力を複数の空白に置き換える
+set autoindent " 改行時に前の行のインデントの計測
+set smartindent " 改行時に入力された行の末尾に合わせて次のインデントを増減する
+set cindent " Cプログラムファイルの自動インデントを決める
+set smarttab " 新しい行を作った時に高度な自動インデントを行う
+set tabstop=4   " タブを含むファイルを開いた際、タブを何文字の空白に変換するか
+set shiftwidth=4 " 自動インデントで入る空白数
+set softtabstop=0 " キーボードから入るタブの数
+
+" 改行時のコメントアウトを無効
+set formatoptions-=ro
 
 " 履歴
 set history=1000
@@ -41,11 +48,6 @@ set incsearch
 
 " 括弧入力時に対応する括弧を表示
 set showmatch
-
-" guicolor
-set termguicolors
-let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 
 " dein用設定
 if $compatible
@@ -95,13 +97,12 @@ if has('unix')
 endif
 
 filetype plugin indent on
+if has("autocmd")
+    "sw=softtabstop, sts=shiftwidth, ts=tabstop, et=expandtabの略
+    autocmd FileType html   setlocal sw=2 sts=2 ts=2 et
+endif
 
 " Python3 provider
 let g:python3_host_prog = '/usr/bin/python3'
 let g:loaded_python_provider = 0
 
-" 改行時のコメントアウトを無効
-set formatoptions-=r
-set formatoptions-=o
-" コメント改行時に自動でコメントヘッダを挿入しない（ファイルタイプ：全て）
-autocmd FileType * set formatoptions-=ro
