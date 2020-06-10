@@ -18,11 +18,10 @@ hook_add='''
 	      \   'fileformat': 'LightlineFileformat',
 	      \   'filetype': 'LightlineFiletype',
 	      \   'fileencoding': 'LightlineFileencoding',
-	      \   'mode': 'LightlineMode',
-	      \   'cocstatus': 'coc#status'
+	      \   'mode': 'LightlineMode'
 	      \ },
 	      \ 'separator': { 'left': "\ue0b0", 'right': "\ue0b2" },
-	      \ 'subseparator': { 'left': "\ue0b1", 'right': "\ue0b3 " }
+	      \ 'subseparator': { 'left': "\ue0b1", 'right': "\ue0b3" }
 	      \ }
 	
 	function! LightlineModified()
@@ -77,42 +76,41 @@ hook_add='''
 	endfunction
 '''
 
+# 矩形選択時に、同時に複数行編集する
 [[plugins]]
 repo = 'terryma/vim-multiple-cursors'
 
-[[plugins]]
-repo = 'tpope/vim-surround'
-
+# 矢印キーを無効化
 [[plugins]]
 repo = 'modsound/gips-vim'
 
 [[plugins]]
 repo = 'easymotion/vim-easymotion'
 hook_add='''
-" <Leader>f{char} to move to {char}
-map  <Leader>g <Plug>(easymotion-bd-f)
-nmap <Leader>g <Plug>(easymotion-overwin-f)
-
-" s{char}{char} to move to {char}{char}
-nmap s <Plug>(easymotion-overwin-f2)
-
-" Move to line
-map <Leader>L <Plug>(easymotion-bd-jk)
-nmap <Leader>L <Plug>(easymotion-overwin-line)
-
-" Move to word
-map  <Leader>w <Plug>(easymotion-bd-w)
-nmap <Leader>w <Plug>(easymotion-overwin-w)
+    " <Leader>f{char} to move to {char}
+    map  <Leader>g <Plug>(easymotion-bd-f)
+    nmap <Leader>g <Plug>(easymotion-overwin-f)
+    
+    " s{char}{char} to move to {char}{char}
+    nmap s <Plug>(easymotion-overwin-f2)
+    
+    " Move to line
+    map <Leader>L <Plug>(easymotion-bd-jk)
+    nmap <Leader>L <Plug>(easymotion-overwin-line)
+    
+    " Move to word
+    map  <Leader>w <Plug>(easymotion-bd-w)
+    nmap <Leader>w <Plug>(easymotion-overwin-w)
 '''
 
 [[plugins]]
 repo = 'jeffkreeftmeijer/vim-numbertoggle'
 
 [[plugins]]
-repo = 'kana/vim-operator-user'
+repo = 'osyo-manga/vim-operator-search'
 
 [[plugins]]
-repo = 'osyo-manga/vim-operator-search'
+repo = 'kana/vim-operator-user'
 
 [[plugins]]
 repo = 'kana/vim-operator-replace'
@@ -125,16 +123,6 @@ repo = 'kana/vim-textobj-function'
 
 [[plugins]]
 repo = 'kana/vim-textobj-user'
-
-[[plugins]]
-repo = 'scrooloose/nerdtree'
-
-[[plugins]]
-repo = 'mhinz/vim-startify'
-
-# Gitの編集履歴
-# [[plugins]]
-# repo = 'mhinz/vim-signify'
 
 [[plugins]]
 repo = 'kana/vim-submode'
@@ -151,7 +139,54 @@ hook_add='''
 '''
 
 [[plugins]]
+repo = 'scrooloose/nerdtree'
+
+[[plugins]]
+repo = 'mhinz/vim-startify'
+
+# Gitの編集履歴
+# [[plugins]]
+# repo = 'mhinz/vim-signify'
+
+[[plugins]]
 repo = 'ryanoasis/vim-devicons'
+
+[[plugins]]
+repo = 'tomasiser/vim-code-dark'
+hook_add = '''
+	colorscheme codedark
+'''
+
+[[plugins]]
+repo = 'tpope/vim-fugitive'
+
+[[plugins]]
+repo = 'tpope/vim-surround'
+
+[[plugins]]
+repo = 'tpope/vim-dadbod'
+
+[[plugins]]
+repo = 'kristijanhusak/vim-dadbod-ui'
+
+# 区切り文字などの整形
+[[plugins]]
+repo = 'junegunn/vim-easy-align'
+hook_add = '''
+    xmap ga <Plug>(EasyAlign)
+    nmap ga <Plug>(EasyAlign)
+'''
+
+[[plugins]]
+repo = 'RRethy/vim-illuminate'
+hook_add = '''
+    " Time in milliseconds (default 250)
+    let g:Illuminate_delay = 500
+'''
+
+[[plugins]]
+repo = 'junegunn/fzf.vim'
+build = 'fzf#install()'
 
 [[plugins]]
 repo = 'neoclide/coc.nvim'
@@ -161,7 +196,7 @@ build = 'coc#util#install()'
 hook_add = '''
     " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
     " delays and poor user experience.
-    set updatetime=300
+    set updatetime=400
     
     " Don't pass messages to |ins-completion-menu|.
     set shortmess+=c
@@ -267,20 +302,3 @@ hook_add = '''
     command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
 
 '''
-
-[[plugins]]
-repo = 'tomasiser/vim-code-dark'
-hook_add = '''
-	colorscheme codedark
-'''
-
-[[plugins]]
-repo = 'tpope/vim-fugitive'
-
-[[plugins]]
-repo = 'junegunn/fzf.vim'
-build = 'fzf#install()'
-
-# 言語シンタックス系、バグ多し
-# [[plugins]]
-# repo = 'sheerun/vim-polyglot'
