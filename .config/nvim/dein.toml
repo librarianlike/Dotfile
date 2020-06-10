@@ -4,7 +4,7 @@ hook_add='''
     " Lightline設定
 	set laststatus=2
 	let g:lightline = {
-	      \ 'colorscheme': 'codedark',
+	      \ 'colorscheme': 'onedark',
 	      \ 'mode_map': { 'c': 'NORMAL' },
 	      \ 'active': {
 	      \   'left': [ [ 'mode', 'paste' ], ['fugitive'],
@@ -153,9 +153,20 @@ repo = 'ryanoasis/vim-devicons'
 
 [[plugins]]
 repo = 'tomasiser/vim-code-dark'
+
+[[plugins]]
+repo = 'joshdick/onedark.vim'
 hook_add = '''
-	colorscheme codedark
+    if (has("autocmd") && !has("gui_running"))
+      augroup colorset
+        autocmd!
+        let s:white = { "gui": "#ABB2BF", "cterm": "145", "cterm16" : "7" }
+        autocmd ColorScheme * call onedark#set_highlight("Normal", { "fg": s:white }) " `bg` will not be styled since there is no `bg` setting
+      augroup END
+    endif
+	colorscheme onedark
 '''
+
 
 [[plugins]]
 repo = 'tpope/vim-fugitive'
@@ -187,6 +198,14 @@ hook_add = '''
 [[plugins]]
 repo = 'junegunn/fzf.vim'
 build = 'fzf#install()'
+
+[[plugins]]
+repo = 'miyakogi/seiya.vim'
+hook_add = '''
+    let g:seiya_auto_enable=0
+    " Default value: ['ctermbg']
+    "let g:seiya_target_groups = has('nvim') ? ['guibg'] : ['ctermbg']
+'''
 
 [[plugins]]
 repo = 'neoclide/coc.nvim'
